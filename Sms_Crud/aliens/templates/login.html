@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS styles */
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: green;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .alert-danger {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login form -->
+        <form class="col-md-6 col-lg-4 mx-auto card" method="POST" autocomplete="off" enctype="multipart/form-data">
+            <h1>Login</h1>
+
+            {% csrf_token %} <!-- CSRF token for security -->
+
+            <!-- Display error/success messages -->
+            {% if messages %}
+			<div class="alert alert-primary" role="alert">
+				{% for message in messages %}
+				{{ message }}
+				{% endfor %}
+			</div>
+			{% endif %}
+
+
+            <!-- Username input field -->
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">{{ form.fields.username.label }}</label>
+                {{ form.username }}
+            </div>
+
+            <!-- Password input field -->
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">{{ form.fields.password.label }}</label>
+                {{ form.password }}
+            </div>
+
+            <!-- Link to registration page -->
+            <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

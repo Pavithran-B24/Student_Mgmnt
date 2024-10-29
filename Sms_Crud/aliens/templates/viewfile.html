@@ -1,0 +1,7 @@
+<div>
+{% if file_data %}
+    <embed src="data:application/pdf;base64,{{ file_data }}" type="application/pdf" width="100%" height="600px">
+{% else %}
+    <p>No PDF uploaded.</p>
+{% endif %}
+</div>

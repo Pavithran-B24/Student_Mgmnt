@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Student Information</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        /* CSS Stylesheet */
+        form {
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #container {
+            text-align: center;
+            max-height: 80vh;
+            min-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            margin: 30px auto;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .Container {
+            text-align: center;
+            padding: 20px;
+            margin: 30px auto;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            text-align: center;
+        }
+
+        h2 {
+            color: blue;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h2>Create Information</h2>
+        <!-- <form id="stdForm" method="post" autocomplete="off" action="{% url 'create'%}"> -->
+            {% csrf_token %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+<!-- 
+            <label for="fullname">Full Name:</label><br>
+            <input type="text" id="fullname" name="fullname" placeholder="Full Name"><br>
+
+            <label for="role_no">Roll Number:</label><br>
+            <input type="number" id="role_no" name="role_no" placeholder="Roll Number"><br>
+
+            <label for="email">Email ID:</label><br>
+            <input type="email" id="email" name="email" placeholder="Email ID"><br>
+
+            <label for="mobile">Mobile Number:</label><br>
+            <input type="number" id="mobile" name="mobile" placeholder="Mobile Number"><br>
+
+            <label for="degree">Degree:</label><br>
+            <input type="text" id="degree" name="degree" placeholder="Degree"><br>
+
+            <label for="dept">Department:</label><br>
+            <input type="text" id="dept" name="dept" placeholder="Department"><br>
+        </form> -->
+            <div id="formsContainer">
+                <!-- Newly added forms will appear here -->
+            </div>
+    </div>
+
+    <button onclick="addNew()" class="btn btn-dark">ADD NEW</button>
+    <button onclick="submitForms()" class="btn btn-primary">Submit</button>
+
+    <script>
+        var formCount = 0;
+
+        function addNew() {
+            formCount++;
+
+            var newForm = `
+        <form id="stdForm${formCount}">
+            <label for="fullname">Full Name:</label><br>
+            <input type="text" id="fullname" name="fullname" placeholder="Full Name"><br>
+            <label for="role_no">Roll Number:</label><br>
+            <input type="number" id="role_no" name="role_no" placeholder="Roll Number"><br>
+            <label for="email">Email ID:</label><br>
+            <input type="email" id="email" name="email" placeholder="Email ID"><br>
+            <label for="mobile">Mobile Number:</label><br>
+            <input type="number" id="mobile" name="mobile" placeholder="Mobile Number"><br>
+            <label for="degree">Degree:</label><br>
+            <input type="text" id="degree" name="degree" placeholder="Degree"><br>
+            <label for="dept">Department:</label><br>
+            <input type="text" id="dept" name="dept" placeholder="Department"><br>
+        </form>`;
+
+            $('#formsContainer').append(newForm);
+        }
+
+        function submitForms() {
+            var formData = [];
+
+            for(var i = 1; i <= formCount; i++) {
+                var form = $(`#stdForm${i}`);
+                var formInfo = {
+                    fullname: form.find('#fullname').val(),
+                    role_no: form.find('#role_no').val(),
+                    email: form.find('#email').val(),
+                    mobile: form.find('#mobile').val(),
+                    degree: form.find('#degree').val(),
+                    dept: form.find('#dept').val()
+                };
+
+                formData.push(formInfo);
+            }
+            $.ajax({
+                url: '/create/',
+                type: 'POST',
+                data: { form: JSON.stringify(formData), csrfmiddlewaretoken: '{{ csrf_token }}' },
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr, status, error);
+                    // Handle error here
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

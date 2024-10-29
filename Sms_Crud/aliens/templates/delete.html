@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unauthentication</title>
+    <style>
+        .container {
+            text-align: center;
+            padding: 20px;
+            margin: 100px auto;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        h2 {
+            color: red;
+            font-weight: bold;
+        }
+
+        .add-button {
+            margin-top: 20px;
+        }
+
+        .add-button input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-button a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form method="post" action="#">
+            {% csrf_token %}
+            <h2>Do you really want to delete this information?</h2>
+            <div class="add-button">
+                <input type="submit" value="Yes">
+                <a href="{% url 'sign_in' %}" class="button">Login</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
